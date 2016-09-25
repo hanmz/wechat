@@ -31,14 +31,12 @@ public class WechatSecurityController {
                       @RequestParam(value = "echostr") String echostr) {
     try {
       if (SignUtil.checkSignature(signature, timestamp, nonce)) {
-        return "Hello World";
-      } else {
-        log.info("这里存在非法请求！");
+        return echostr;
       }
     } catch (Exception e) {
       log.error("Error {}", e);
     }
-    return "hello world";
+    return "这里存在非法请求!";
   }
 
   // post 方法用于接收微信服务端消息
