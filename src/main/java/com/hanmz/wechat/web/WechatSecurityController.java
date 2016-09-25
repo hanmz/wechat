@@ -19,12 +19,11 @@ import java.io.PrintWriter;
 
 @Slf4j
 @RestController
-@RequestMapping("/wechat")
 public class WechatSecurityController {
   /**
    * 用于接收 get 参数，返回验证参数
    */
-  @RequestMapping(value = "security", method = RequestMethod.GET)
+  @RequestMapping("/security")
   public String doGet(@RequestParam(value = "signature") String signature,
                       @RequestParam(value = "timestamp") String timestamp,
                       @RequestParam(value = "nonce") String nonce,
@@ -40,7 +39,7 @@ public class WechatSecurityController {
   }
 
   // post 方法用于接收微信服务端消息
-  @RequestMapping(value = "security", method = RequestMethod.POST)
+  @RequestMapping(value = "/security", method = RequestMethod.POST)
   public String DoPost() {
     System.out.println("这是 post 方法！");
     return "这是 post 方法！";
