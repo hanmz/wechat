@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,35 +18,33 @@ import java.io.PrintWriter;
  */
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/wechat")
 public class WechatSecurityController {
   /**
    * 用于接收 get 参数，返回验证参数
    */
   @RequestMapping(value = "security", method = RequestMethod.GET)
-  public void doGet(HttpServletRequest request,
-                    HttpServletResponse response,
-                    @RequestParam(value = "signature", required = true) String signature,
-                    @RequestParam(value = "timestamp", required = true) String timestamp,
-                    @RequestParam(value = "nonce", required = true) String nonce,
-                    @RequestParam(value = "echostr", required = true) String echostr) {
+  public String doGet(@RequestParam(value = "signature") String signature,
+                      @RequestParam(value = "timestamp") String timestamp,
+                      @RequestParam(value = "nonce") String nonce,
+                      @RequestParam(value = "echostr") String echostr) {
     try {
       if (SignUtil.checkSignature(signature, timestamp, nonce)) {
-        PrintWriter out = response.getWriter();
-        out.print(echostr);
-        out.close();
+        return "Hello World";
       } else {
         log.info("这里存在非法请求！");
       }
     } catch (Exception e) {
       log.error("Error {}", e);
     }
+    return "hello world";
   }
 
-  @RequestMapping(value = "security", method = RequestMethod.POST)
   // post 方法用于接收微信服务端消息
-  public void DoPost() {
+  @RequestMapping(value = "security", method = RequestMethod.POST)
+  public String DoPost() {
     System.out.println("这是 post 方法！");
+    return "这是 post 方法！";
   }
 }
